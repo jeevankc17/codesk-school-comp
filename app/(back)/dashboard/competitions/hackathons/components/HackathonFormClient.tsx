@@ -1,25 +1,27 @@
+'use client';
+
 import { useState } from 'react';
-import { TabNavigation } from '../commons/TabNavigation';
-import { ProgressBar } from '../commons/ProgressBar';
-import { BasicsForm } from './components/BasicsForm/BasicsForm';
-import { ApplicationForm } from './components/ApplicationForm/ApplicationForm';
-import { LinksForm } from './components/LinksForm/LinksForm';
-import { BrandForm } from './components/BrandForm/BrandForm';
-import { PartnersForm } from './components/PartnersForm/PartnersForm';
-import { DatesForm } from './components/DatesForm/DatesForm';
-import { Partner } from './components/PartnersForm/types';
-import { PrizesForm } from './components/PrizesForm/PrizesForm';
-import { Track } from './components/PrizesForm/types';
-import { SpeakersForm } from './components/SpeakersForm/SpeakersForm';
-import { Speaker } from './components/SpeakersForm/types';
-import { tabs, TabId } from './constants/tabs';
-import { FormNavigation } from '../commons/FormNavigation';
-import { ScheduleForm } from './components/ScheduleForm/ScheduleForm';
-import { ScheduleEvent } from './components/ScheduleForm/types';
-import { FAQsForm } from './components/FAQsForm/FAQsForm';
-import { FAQ } from './components/FAQsForm/types';
-import { HackathonFormProps, HackathonFormData } from './types';
-import HackathonPreview from './components/HackathonPreview/HackathonPreview';
+import { TabNavigation } from '../../commons/TabNavigation';
+import { ProgressBar } from '../../commons/ProgressBar';
+import { BasicsForm } from '../components/BasicsForm/BasicsForm';
+import { ApplicationForm } from '../components/ApplicationForm/ApplicationForm';
+import { LinksForm } from '../components/LinksForm/LinksForm';
+import { BrandForm } from '../components/BrandForm/BrandForm';
+import { PartnersForm } from '../components/PartnersForm/PartnersForm';
+import { DatesForm } from '../components/DatesForm/DatesForm';
+import { Partner } from '../components/PartnersForm/types';
+import { PrizesForm } from '../components/PrizesForm/PrizesForm';
+import { Track } from '../components/PrizesForm/types';
+import { SpeakersForm } from '../components/SpeakersForm/SpeakersForm';
+import { Speaker } from '../components/SpeakersForm/types';
+import { tabs, TabId } from '../constants/tabs';
+import { FormNavigation } from '../../commons/FormNavigation';
+import { ScheduleForm } from '../components/ScheduleForm/ScheduleForm';
+import { ScheduleEvent } from '../components/ScheduleForm/types';
+import { FAQsForm } from '../components/FAQsForm/FAQsForm';
+import { FAQ } from '../components/FAQsForm/types';
+import { HackathonFormProps, HackathonFormData } from '../types';
+import HackathonPreview from '../components/HackathonPreview/HackathonPreview';
 
 const calculateProgress = (
   formData: HackathonFormData,
@@ -112,36 +114,36 @@ const calculateProgress = (
   return completedWeight;
 };
 
-const HackathonForm: React.FC<HackathonFormProps> = ({ onSubmit }) => {
+export const HackathonFormClient: React.FC<HackathonFormProps> = ({ initialData = {}, onSubmit }) => {
   const [activeTab, setActiveTab] = useState<TabId>('basics');
   const [formData, setFormData] = useState<HackathonFormData>({
     // Basics
-    name: '',
-    tagline: '',
-    about: '',
-    themes: [],
-    approxParticipants: 0,
-    minTeamSize: 0,
-    maxTeamSize: 0,
-    venue: '',
+    name: initialData.name || '',
+    tagline: initialData.tagline || '',
+    about: initialData.about || '',
+    themes: initialData.themes || [],
+    approxParticipants: initialData.approxParticipants || 0,
+    minTeamSize: initialData.minTeamSize || 0,
+    maxTeamSize: initialData.maxTeamSize || 0,
+    venue: initialData.venue || '',
     // Dates
     dates: {
-      timezone: '',
-      applicationOpen: { date: '', time: '' },
-      applicationClose: { date: '', time: '' },
-      rsvpWithin: 3,
-      hackathonBegins: { date: '', time: '' },
-      submissionDeadline: { date: '', time: '' }
+      timezone: initialData.dates?.timezone || '',
+      applicationOpen: initialData.dates?.applicationOpen || { date: '', time: '' },
+      applicationClose: initialData.dates?.applicationClose || { date: '', time: '' },
+      rsvpWithin: initialData.dates?.rsvpWithin || 3,
+      hackathonBegins: initialData.dates?.hackathonBegins || { date: '', time: '' },
+      submissionDeadline: initialData.dates?.submissionDeadline || { date: '', time: '' }
     },
     // Application form data
-    selectedFields: ['first_last_name', 'email'],
+    selectedFields: initialData.selectedFields || ['first_last_name', 'email'],
     // Links form data
-    websiteUrl: '',
-    codeskUrl: '',
-    contactEmail: '',
-    codeOfConductUrl: '',
-    useCodeOfConductUrl: false,
-    socialLinks: {
+    websiteUrl: initialData.websiteUrl || '',
+    codeskUrl: initialData.codeskUrl || '',
+    contactEmail: initialData.contactEmail || '',
+    codeOfConductUrl: initialData.codeOfConductUrl || '',
+    useCodeOfConductUrl: initialData.useCodeOfConductUrl || false,
+    socialLinks: initialData.socialLinks || {
       twitter: '',
       linkedin: '',
       discord: '',
@@ -152,26 +154,27 @@ const HackathonForm: React.FC<HackathonFormProps> = ({ onSubmit }) => {
       instagram: '',
     },
     // Brand form data
-    brandColor: '#000000',
-    logo: null,
-    favicon: null,
-    coverImage: null,
+    brandColor: initialData.brandColor || '#000000',
+    logo: initialData.logo || null,
+    favicon: initialData.favicon || null,
+    coverImage: initialData.coverImage || null,
     // Partners form data
-    partners: [],
-    addLater: false,
+    partners: initialData.partners || [],
+    addLater: initialData.addLater || false,
     // Tracks and prizes
-    tracks: [],
+    tracks: initialData.tracks || [],
     // Speakers
-    speakers: [],
+    speakers: initialData.speakers || [],
     // Schedule events
-    events: [],
+    events: initialData.events || [],
     // FAQs
-    faqs: []
+    faqs: initialData.faqs || []
   });
-  const [prizes, setPrizes] = useState<Track[]>([]);
-  const [speakers, setSpeakers] = useState<Speaker[]>([]);
-  const [scheduleEvents, setScheduleEvents] = useState<ScheduleEvent[]>([]);
-  const [faqs, setFaqs] = useState<FAQ[]>([]);
+  const [prizes, setPrizes] = useState<Track[]>(initialData.tracks || []);
+  const [speakers, setSpeakers] = useState<Speaker[]>(initialData.speakers || []);
+  const [scheduleEvents, setScheduleEvents] = useState<ScheduleEvent[]>(initialData.events || []);
+  const [faqs, setFaqs] = useState<FAQ[]>(initialData.faqs || []);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleFormChange = (updates: Partial<typeof formData>) => {
     setFormData((prev) => ({ ...prev, ...updates }));
@@ -207,6 +210,29 @@ const HackathonForm: React.FC<HackathonFormProps> = ({ onSubmit }) => {
     setFaqs(updatedFaqs);
   };
 
+  const handleFormSubmit = async () => {
+    if (progress !== 100) return;
+    
+    setIsSubmitting(true);
+    
+    try {
+      // Combine all form data for submission
+      const completeFormData = {
+        ...formData,
+        tracks: prizes,
+        speakers,
+        events: scheduleEvents,
+        faqs
+      };
+      
+      await onSubmit(completeFormData);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   // Calculate progress
   const progress = calculateProgress(
     formData,
@@ -229,12 +255,11 @@ const HackathonForm: React.FC<HackathonFormProps> = ({ onSubmit }) => {
             </div>
             {progress === 100 ? (
               <button
-                onClick={() => {
-                  console.log('Submitting form...');
-                }}
-                className="w-full sm:w-auto px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+                onClick={handleFormSubmit}
+                disabled={isSubmitting}
+                className="w-full sm:w-auto px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:bg-blue-300"
               >
-                Submit
+                {isSubmitting ? 'Submitting...' : 'Submit'}
               </button>
             ) : (
               <div className="w-full sm:w-auto text-sm text-blue-600 bg-blue-50 px-4 py-2 rounded-md text-center">
@@ -376,7 +401,7 @@ const HackathonForm: React.FC<HackathonFormProps> = ({ onSubmit }) => {
                 events: scheduleEvents,
                 faqs
               }}
-              onSubmit={onSubmit}
+              onSubmit={handleFormSubmit}
               onBack={() => setActiveTab('basics')}
             />
           )}
@@ -385,5 +410,3 @@ const HackathonForm: React.FC<HackathonFormProps> = ({ onSubmit }) => {
     </div>
   );
 };
-
-export default HackathonForm; 

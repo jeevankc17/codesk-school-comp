@@ -76,6 +76,7 @@ export interface HackathonFormData {
 }
 
 export interface HackathonFormProps {
-  onSubmit: (data: HackathonFormData) => void;
+  initialData?: Partial<HackathonFormData>;
+  onSubmit: (data: HackathonFormData) => Promise<void>;
   isLoading?: boolean;
 } 

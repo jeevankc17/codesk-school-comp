@@ -51,10 +51,10 @@ export default function AppSidebar() {
       url: "/competitions",
       icon: Users,
       items: [
-        { title: "Hackathons", url: "/competitions/hackathons" },
-        { title: "Builders", url: "/competitions/builders" },
-        { title: "Projects", url: "/competitions/projects" },
-        { title: "Organizers", url: "/competitions/organizers" },
+        { title: "Hackathons", url: "/dashboard/competitions/hackathons" },
+        { title: "Builders", url: "/dashboard/competitions/builders" },
+        { title: "Projects", url: "/dashboard/competitions/projects" },
+        { title: "Organizers", url: "/dashboard/competitions/organizers" },
       ],
     },
     {

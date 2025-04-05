@@ -20,15 +20,15 @@ export default function Logo({ variant = "light", size = "md" }: LogoProps) {
         <div className="bg-blue-500 rounded-full p-1 md:hidden">
           <span className="text-white font-bold text-xl">
             <GraduationCap
-              className={cn("size-6", size === "lg" && "size-10")}
+              className={cn("size-6", size === "lg" && "size-2")}
             />
           </span>
         </div>
         <Image
           src={school?.logo ?? "/images/logo.png"}
-          alt={school?.name ?? "School Pro"}
+          alt={school?.name ?? "Codesklab"}
           className="w-44"
-          width={500}
+          width={150}
           height={150}
         />
       </Link>
@@ -45,7 +45,7 @@ export default function Logo({ variant = "light", size = "md" }: LogoProps) {
           src={school?.logo ?? "/images/logo.png"}
           alt={school?.name ?? "School Pro"}
           className="w-44"
-          width={500}
+          width={150}
           height={150}
         />
       </Link>

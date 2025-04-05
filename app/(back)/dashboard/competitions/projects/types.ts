@@ -16,5 +16,6 @@ export interface ProjectFormData {
 export interface ProjectFormProps {
   hackathonName: string;
   organizerName: string;
-  onSubmit: (data: ProjectFormData) => void;
+  initialData: Record<string, any>;
+  onSubmit: (formData: any) => Promise<void>;
 } 

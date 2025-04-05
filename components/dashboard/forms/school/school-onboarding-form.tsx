@@ -54,7 +54,7 @@ export default function SchoolOnboardingForm() {
     <form className="" onSubmit={handleSubmit(saveStudent)}>
       <div className="text-center">
         <h2 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl">
-          Welcome to School Pro,
+          Welcome to CodeskLab,
         </h2>
 
         <p className="leading-7 [&:not(:first-child)]:mt-2">

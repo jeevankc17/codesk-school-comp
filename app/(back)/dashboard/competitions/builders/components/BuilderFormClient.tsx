@@ -1,17 +1,19 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Box, Tab, Tabs } from '@mui/material';
-import { BUILDER_FORM_TABS, BuilderFormTabs } from './constants/tabs';
-import { BuilderFormProps, BuilderFormData } from './types';
-import { ProgressBar } from '../commons/ProgressBar';
-import { FormNavigation } from '../commons/FormNavigation';
-import BasicInfoForm from './components/BasicInfoForm/BasicInfoForm';
-import EducationForm from './components/EducationForm/EducationForm';
-import SkillsForm from './components/SkillsForm/SkillsForm';
-import SocialLinksForm from './components/SocialLinksForm/SocialLinksForm';
-import AdditionalInfoForm from './components/AdditionalInfoForm/AdditionalInfoForm';
-import { BuilderPreview } from './components/BuilderPreview/BuilderPreview';
+import { BUILDER_FORM_TABS, BuilderFormTabs } from '../constants/tabs';
+import { BuilderFormProps, BuilderFormData } from '../types';
+import { ProgressBar } from '../../commons/ProgressBar';
+import { FormNavigation } from '../../commons/FormNavigation';
+import BasicInfoForm from '../components/BasicInfoForm/BasicInfoForm';
+import EducationForm from '../components/EducationForm/EducationForm';
+import SkillsForm from '../components/SkillsForm/SkillsForm';
+import SocialLinksForm from '../components/SocialLinksForm/SocialLinksForm';
+import AdditionalInfoForm from '../components/AdditionalInfoForm/AdditionalInfoForm';
+import { BuilderPreview } from '../components/BuilderPreview/BuilderPreview';
 
-const BuilderForm: React.FC<BuilderFormProps> = ({ initialData, onSubmit }) => {
+export const BuilderFormClient: React.FC<BuilderFormProps> = ({ initialData, onSubmit }) => {
   const [activeTab, setActiveTab] = useState<BuilderFormTabs>(BUILDER_FORM_TABS.BASIC_INFO);
   const [formData, setFormData] = useState<BuilderFormData>({
     name: '',
@@ -203,5 +205,3 @@ const BuilderForm: React.FC<BuilderFormProps> = ({ initialData, onSubmit }) => {
     </div>
   );
 };
-
-export default BuilderForm; 

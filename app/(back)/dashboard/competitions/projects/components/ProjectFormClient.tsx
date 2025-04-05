@@ -1,15 +1,16 @@
+'use client'
 import React, { useState } from 'react';
 import { Box, Tab, Tabs } from '@mui/material';
-import { PROJECT_FORM_TABS, ProjectFormTabs } from './constants/tabs';
-import BasicInfoForm from './components/BasicInfoForm/BasicInfoForm';
-import DetailsForm from './components/DetailsForm/DetailsForm';
-import MediaLinksForm from './components/MediaLinksForm/MediaLinksForm';
-import ProjectPreview from './components/ProjectPreview/ProjectPreview';
-import { ProjectFormProps, ProjectFormData } from './types';
-import { ProgressBar } from '../commons/ProgressBar';
-import { FormNavigation } from '../commons/FormNavigation';
+import { PROJECT_FORM_TABS, ProjectFormTabs } from '../constants/tabs';
+import BasicInfoForm from '../components/BasicInfoForm/BasicInfoForm';
+import DetailsForm from '../components/DetailsForm/DetailsForm';
+import MediaLinksForm from '../components/MediaLinksForm/MediaLinksForm';
+import ProjectPreview from '../components/ProjectPreview/ProjectPreview';
+import { ProjectFormProps, ProjectFormData } from '../types';
+import { ProgressBar } from '../../commons/ProgressBar';
+import { FormNavigation } from '../../commons/FormNavigation';
 
-const ProjectForm: React.FC<ProjectFormProps> = ({ hackathonName, organizerName, onSubmit }) => {
+const ProjectFormClient: React.FC<ProjectFormProps> = ({ hackathonName, organizerName, onSubmit }) => {
   const [activeTab, setActiveTab] = useState<ProjectFormTabs>(PROJECT_FORM_TABS.BASIC_INFO);
   const [formData, setFormData] = useState<ProjectFormData>({
     projectName: '',
@@ -157,4 +158,4 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ hackathonName, organizerName,
   );
 };
 
-export default ProjectForm; 
+export default ProjectFormClient; 
