@@ -8,6 +8,8 @@ import {
   SubjectCategory,
   SubjectType,
   Teacher,
+  Builder,
+  TShirtSize
 } from "@prisma/client";
 import { NextRequest } from "next/server";
 import { Option } from "react-tailwindcss-select/dist/components/type";
@@ -16,7 +18,7 @@ import { Option } from "react-tailwindcss-select/dist/components/type";
 export type ContactItem = Contact;
 export type ClassItem = Prisma.ClassGetPayload<{
   include: { streams: true; students: true; school: true };
-}>;
+}>; 
 export type StreamItem = Prisma.StreamGetPayload<{
   include: { class: true; students: true };
 }>;
@@ -35,12 +37,15 @@ export type SubjectTypeEnum = SubjectType;
 export type GenderEnum = Gender;
 export type TeacherItem = Teacher;
 export type UserItem = Prisma.UserGetPayload<{}>;
+export type BuilderItem = Builder;
+
+
 // Brief types
 export type BriefDepartmentItem = Pick<DepartmentItem, "id" | "name">;
 export type BriefSubjectItem = Pick<SubjectItem, "id" | "name">;
 
 // Create types
-export type ClassCreateProps = Pick<ClassItem, "title" | "slug" | "schoolId">;
+export type  ClassCreateProps = Pick<ClassItem, "title" | "slug" | "schoolId">;
 export type StreamCreateProps = Pick<StreamItem, "title" | "slug" | "classId" | "schoolId">;
 export type ParentCreateProps = Omit<ParentItem, "id">; //& { profileImage: string;};
 export type StudentCreateProps = Omit<StudentItem, "id"> & {
@@ -62,6 +67,7 @@ export type SubjectCreateProps = Pick<
 >;
 
 export type TeacherCreateProps = Omit<TeacherItem, "id">;
+export type BuilderCreateProps = Omit<BuilderItem, "id" | "createdAt" | "updatedAt" | "publishedAt">;
 
 export type UserCreateProps = Omit<
   UserItem,

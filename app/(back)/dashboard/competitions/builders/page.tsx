@@ -1,21 +1,21 @@
-import React from 'react';
-import { redirect } from 'next/navigation';
-import { getServerUser } from '@/actions/auth';
-import { BuilderFormClient } from './components/BuilderFormClient';
+import { getAllBuilders } from "@/actions/builders";
+import TableHeader from "@/components/dashboard/Tables/TableHeader";
+import DataTable from "@/components/DataTableComponents/DataTable";
 
-export default async function CompetitionsBuildersPage() {
-  const userData = await getServerUser();
-  
-  if (!userData) {
-    redirect('/login');
-  }
+export default async function BuildersPage() {
+  const builder = (await getAllBuilders()) || [];
 
-  const handleSubmit = async (formData: any) => {
-    'use server';
-    // Here you would typically send the data to your API
-    console.log('Submitting form data:', formData);
-    // Add API call here
-  };
+  console.log("Builders: ", builder);
 
-  return <BuilderFormClient initialData={{}} onSubmit={handleSubmit} />;
+  return (
+    <div className="p-8">
+      <TableHeader
+        title="Builders"
+        linkTitle="Add Builder"
+        href="/dashboard/competitions/builders/new"
+        data={builder}
+        model="builder"
+      />
+    </div>
+  );
 }

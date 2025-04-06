@@ -43,7 +43,7 @@ export default function AppSidebar() {
       url: "/dashboard",
       icon: LayoutDashboard,
       isActive: true,
-      items: [{ title: "Overview", url: "/dashboard/overview" }],
+      items: [{ title: "Overview", url: "/dashboard" }],
     },
     {
       // Competetions
@@ -127,18 +127,6 @@ export default function AppSidebar() {
         { title: "Payments", url: "/finance/payments" },
         { title: "Scholarships", url: "/finance/scholarships" },
         { title: "Reports", url: "/finance/reports" },
-      ],
-    },
-    {
-      // Transport
-      title: "Transport",
-      url: "/transport",
-      icon: Bus,
-      items: [
-        { title: "Routes", url: "/transport/routes" },
-        { title: "Tracking", url: "/transport/tracking" },
-        { title: "Drivers", url: "/transport/drivers" },
-        { title: "Maintenance", url: "/transport/maintenance" },
       ],
     },
     {
