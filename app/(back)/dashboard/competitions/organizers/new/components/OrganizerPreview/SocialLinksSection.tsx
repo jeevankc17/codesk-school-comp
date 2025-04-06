@@ -6,19 +6,19 @@ import {
   Facebook, 
   Instagram 
 } from 'lucide-react';
-import { OrganizerFormData } from '../../types';
+import { OrganizerCreateProps } from '@/types/types';
 
 interface SocialLinksSectionProps {
-  data: OrganizerFormData;
+  data: OrganizerCreateProps;
 }
 
 export function SocialLinksSection({ data }: SocialLinksSectionProps) {
   const socialLinks = [
-    { icon: Linkedin, link: data.socialLinks.linkedin, label: 'LinkedIn' },
-    { icon: Twitter, link: data.socialLinks.twitter, label: 'Twitter' },
-    { icon: Github, link: data.socialLinks.github, label: 'GitHub' },
-    { icon: Facebook, link: data.socialLinks.facebook, label: 'Facebook' },
-    { icon: Instagram, link: data.socialLinks.instagram, label: 'Instagram' },
+    { icon: Linkedin, link: data.linkedin || undefined, label: 'LinkedIn' },
+    { icon: Twitter, link: data.twitter || undefined, label: 'Twitter' },
+    { icon: Github, link: data.github || undefined, label: 'GitHub' },
+    { icon: Facebook, link: data.facebook || undefined, label: 'Facebook' },
+    { icon: Instagram, link: data.instagram || undefined, label: 'Instagram' },
   ];
 
   const activeSocialLinks = socialLinks.filter(link => link.link);
@@ -46,4 +46,4 @@ export function SocialLinksSection({ data }: SocialLinksSectionProps) {
       </div>
     </div>
   );
-} 
+}

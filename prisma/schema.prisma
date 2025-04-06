@@ -441,35 +441,59 @@ model ProjectBuilder {
   @@unique([projectId, builderId])
 }
 
+
 model Organizer {
-  id                 String      @id @default(cuid())
-  name               String
-  email              String      @unique
-  phone              String
-  role               String
-  street             String
-  city               String
-  state              String
-  country            String
-  zipCode            String
-  organizationName   String
-  organizationType   String
-  description        String
+  id                 String       @id @default(cuid())
+
+  // Basic Info
+  name               String?
+  email              String?      @unique
+  phone              String?
+  role               String?
+
+  // Address fields (from nested 'address' object in form)
+  street             String?
+  city               String?
+  state              String?
+  country            String?
+  zipCode            String?
+
+  // Organization details
+  organizationName   String?
+  organizationType   OrganizerType? // matches union type from frontend
+
+  description        String?
   website            String?
-  logoUrl            String?
-  establishedYear    Int
-  teamSize           Int
-  previousHackathons Int
-  requiredSkills     String[]
+  logoUrl            String?         // maps from frontend File (upload to URL)
+
+  // Stats
+  establishedYear    Int?
+  teamSize           Int?
+  previousHackathons Int?
+  requiredSkills     String[]        // array of selected skills
+
+  // Social links (from nested 'socialLinks' object)
   linkedin           String?
   twitter            String?
   github             String?
   facebook           String?
   instagram          String?
-  createdAt          DateTime    @default(now())
-  updatedAt          DateTime    @updatedAt
+
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+
+  // Relation
   hackathons         Hackathon[]
 }
+
+enum OrganizerType {
+  educational
+  corporate
+  nonprofit
+  other
+}
+
+
 
 model Partner {
   id          String    @id @default(cuid())

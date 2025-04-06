@@ -1,8 +1,8 @@
 import React from 'react';
-import { OrganizerFormData } from '../../types';
+import { OrganizerCreateProps } from '@/types/types';
 
 interface ContactInfoSectionProps {
-  data: OrganizerFormData;
+  data: OrganizerCreateProps;
 }
 
 export function ContactInfoSection({ data }: ContactInfoSectionProps) {
@@ -12,11 +12,9 @@ export function ContactInfoSection({ data }: ContactInfoSectionProps) {
       <div className="space-y-3">
         <div>
           <label className="block text-sm font-medium text-gray-500">Address</label>
-          <p className="mt-1">
-            {data.address.street}<br />
-            {data.address.city}, {data.address.state} {data.address.zipCode}<br />
-            {data.address.country}
-          </p>
+          {data.street}<br />
+          {data.city}, {data.state} {data.zipCode}<br />
+          {data.country}
         </div>
       </div>
     </div>

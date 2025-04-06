@@ -1,8 +1,8 @@
 import React from 'react';
-import { OrganizerFormData } from '../../types';
+import { OrganizerCreateProps } from '@/types/types';
 
 interface OrganizationSectionProps {
-  data: OrganizerFormData;
+  data: OrganizerCreateProps;
 }
 
 export function OrganizationSection({ data }: OrganizationSectionProps) {
@@ -11,9 +11,9 @@ export function OrganizationSection({ data }: OrganizationSectionProps) {
       <h3 className="text-lg font-semibold text-gray-900">Organization Details</h3>
       <div className="space-y-6">
         <div className="flex items-center space-x-4">
-          {data.logo && (
+          {data.logoUrl && (
             <img 
-              src={URL.createObjectURL(data.logo)} 
+              src={data.logoUrl} 
               alt="Organization Logo" 
               className="w-16 h-16 object-contain"
             />
@@ -47,7 +47,7 @@ export function OrganizationSection({ data }: OrganizationSectionProps) {
         <div>
           <label className="block text-sm font-medium text-gray-500">Required Skills</label>
           <div className="mt-2 flex flex-wrap gap-2">
-            {data.requiredSkills.map((skill) => (
+            {data.requiredSkills?.map((skill) => (
               <span 
                 key={skill}
                 className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
@@ -60,4 +60,4 @@ export function OrganizationSection({ data }: OrganizationSectionProps) {
       </div>
     </div>
   );
-} 
+}

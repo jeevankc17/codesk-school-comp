@@ -1,9 +1,9 @@
-export type TabId = 'basic-info' | 'contact-info' | 'organization' | 'social-links' | 'preview';
+export const ORGANIZER_FORM_TABS = {
+  DETAILS: 'Basic Info',
+  CONTACT: 'Contact Info',
+  ORGANIZATION: 'Organization',
+  SOCIAL_LINKS: 'Social Links',
+  PREVIEW: 'Preview'
+} as const;
 
-export const tabs = [
-  { id: 'basic-info', label: 'Basic Info' },
-  { id: 'contact-info', label: 'Contact Info' },
-  { id: 'organization', label: 'Organization' },
-  { id: 'social-links', label: 'Social Links' },
-  { id: 'preview', label: 'Preview' },
-] as const; 
+export type OrganizerFormTabs = typeof ORGANIZER_FORM_TABS[keyof typeof ORGANIZER_FORM_TABS];

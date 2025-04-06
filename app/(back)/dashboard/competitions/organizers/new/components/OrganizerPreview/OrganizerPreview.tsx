@@ -3,10 +3,10 @@ import { BasicInfoSection } from './BasicInfoSection';
 import { ContactInfoSection } from './ContactInfoSection';
 import { OrganizationSection } from './OrganizationSection';
 import { SocialLinksSection } from './SocialLinksSection';
-import { OrganizerFormData } from '../../types';
+import { OrganizerCreateProps } from '@/types/types';
 
 interface OrganizerPreviewProps {
-  data: OrganizerFormData;
+  data: OrganizerCreateProps;
 }
 
 export function OrganizerPreview({ data }: OrganizerPreviewProps) {
@@ -25,4 +25,4 @@ export function OrganizerPreview({ data }: OrganizerPreviewProps) {
       </div>
     </div>
   );
-} 
+}

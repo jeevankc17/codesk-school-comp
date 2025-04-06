@@ -68,8 +68,8 @@ const SkillsForm: React.FC<{
         <Box sx={{ mb: 2 }}>
           <textarea
             rows={4}
-            value={formData.experience}
-            onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
+            value={formData.experience || ''}
+            onChange={(e) => setFormData({ ...formData, experience: e.target.value || '' })}
             placeholder="Describe your relevant experience..."
             style={{ width: '100%', padding: '10px', fontSize: '16px' }}
           />
@@ -81,8 +81,8 @@ const SkillsForm: React.FC<{
         <Box sx={{ mb: 2 }}>
           <input
             type="url"
-            value={formData.portfolioUrl}
-            onChange={(e) => setFormData({ ...formData, portfolioUrl: e.target.value })}
+            value={formData.portfolioUrl || ''}
+            onChange={(e) => setFormData({ ...formData, portfolioUrl: e.target.value || '' })}
             placeholder="https://your-portfolio.com"
             style={{ width: '100%', padding: '10px', fontSize: '16px' }}
           />

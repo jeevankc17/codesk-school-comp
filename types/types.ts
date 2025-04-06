@@ -9,6 +9,7 @@ import {
   SubjectType,
   Teacher,
   Builder,
+  Organizer,
   TShirtSize
 } from "@prisma/client";
 import { NextRequest } from "next/server";
@@ -38,7 +39,7 @@ export type GenderEnum = Gender;
 export type TeacherItem = Teacher;
 export type UserItem = Prisma.UserGetPayload<{}>;
 export type BuilderItem = Builder;
-
+export type OrganizerItem = Organizer;
 
 // Brief types
 export type BriefDepartmentItem = Pick<DepartmentItem, "id" | "name">;
@@ -68,6 +69,7 @@ export type SubjectCreateProps = Pick<
 
 export type TeacherCreateProps = Omit<TeacherItem, "id">;
 export type BuilderCreateProps = Omit<BuilderItem, "id" | "createdAt" | "updatedAt" | "publishedAt">;
+export type OrganizerCreateProps = Omit<OrganizerItem, "id" | "createdAt" | "updatedAt" | "publishedAt">;
 
 export type UserCreateProps = Omit<
   UserItem,

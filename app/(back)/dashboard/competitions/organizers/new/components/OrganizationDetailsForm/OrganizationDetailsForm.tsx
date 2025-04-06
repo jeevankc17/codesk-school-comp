@@ -1,18 +1,41 @@
-import React, { useRef } from 'react';
-import { InfoTooltip } from '../../../commons/InfoTooltip';
-import { Upload } from 'lucide-react';
-import { OrganizationDetailsFormProps } from './types';
-import { Box } from '@mui/material';
-import { TagInput } from '../../../commons/TagInput';
+'use client';
 
-export function OrganizationDetailsForm({ data, onChange }: OrganizationDetailsFormProps) {
+import React, { useRef } from 'react';
+import { OrganizerCreateProps } from '@/types/types';
+import { InfoTooltip } from '../../../../commons/InfoTooltip';
+import { Upload } from 'lucide-react';
+import { Box } from '@mui/material';
+import { TagInput } from '../../../../commons/TagInput';
+
+interface OrganizationDetailsFormProps {
+  formData: OrganizerCreateProps;
+  setFormData: React.Dispatch<React.SetStateAction<OrganizerCreateProps>>;
+}
+
+export const OrganizationDetailsForm: React.FC<OrganizationDetailsFormProps> = ({ formData, setFormData }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleInputChange = (field: keyof OrganizerCreateProps) => (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const value = event.target.type === 'number' 
+      ? parseInt(event.target.value)
+      : event.target.value;
+    setFormData({ ...formData, [field]: value });
+  };
+
+  const handleFileChange = (field: keyof OrganizerCreateProps) => (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
     if (file) {
-      onChange({ logo: file });
+      setFormData({ ...formData, [field]: file });
     }
+  };
+
+  // Helper function to check if logoUrl is a File object
+  const isFileObject = (value: any): value is File => {
+    return value && typeof value === 'object' && value instanceof File;
   };
 
   return (
@@ -28,8 +51,8 @@ export function OrganizationDetailsForm({ data, onChange }: OrganizationDetailsF
           <input
             type="text"
             id="organizationName"
-            value={data.organizationName}
-            onChange={(e) => onChange({ organizationName: e.target.value })}
+            value={formData.organizationName || ''}
+            onChange={handleInputChange('organizationName')}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             placeholder="e.g. Tech University"
           />
@@ -44,8 +67,8 @@ export function OrganizationDetailsForm({ data, onChange }: OrganizationDetailsF
           </div>
           <select
             id="organizationType"
-            value={data.organizationType}
-            onChange={(e) => onChange({ organizationType: e.target.value as any })}
+            value={formData.organizationType || ''}
+            onChange={handleInputChange('organizationType')}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="educational">Educational Institution</option>
@@ -64,8 +87,8 @@ export function OrganizationDetailsForm({ data, onChange }: OrganizationDetailsF
           </div>
           <textarea
             id="description"
-            value={data.description}
-            onChange={(e) => onChange({ description: e.target.value })}
+            value={formData.description || ''}
+            onChange={handleInputChange('description')}
             rows={4}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             placeholder="Tell us about your organization..."
@@ -82,8 +105,8 @@ export function OrganizationDetailsForm({ data, onChange }: OrganizationDetailsF
           <input
             type="url"
             id="website"
-            value={data.website}
-            onChange={(e) => onChange({ website: e.target.value })}
+            value={formData.website || ''}
+            onChange={handleInputChange('website')}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             placeholder="https://www.example.com"
           />
@@ -100,14 +123,16 @@ export function OrganizationDetailsForm({ data, onChange }: OrganizationDetailsF
             onClick={() => fileInputRef.current?.click()}
             className="flex flex-col items-center justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none"
           >
-            {data.logo ? (
+            {formData.logoUrl ? (
               <div className="flex items-center space-x-2">
                 <img
-                  src={URL.createObjectURL(data.logo)}
+                  src={isFileObject(formData.logoUrl) ? URL.createObjectURL(formData.logoUrl) : formData.logoUrl}
                   alt="Preview"
                   className="w-10 h-10 object-contain"
                 />
-                <span className="text-sm text-gray-600">{data.logo.name}</span>
+                <span className="text-sm text-gray-600">
+                  {isFileObject(formData.logoUrl) ? formData.logoUrl.name : 'Logo uploaded'}
+                </span>
               </div>
             ) : (
               <div className="flex flex-col items-center">
@@ -120,7 +145,7 @@ export function OrganizationDetailsForm({ data, onChange }: OrganizationDetailsF
               type="file"
               className="hidden"
               accept="image/*"
-              onChange={handleLogoChange}
+              onChange={handleFileChange('logoUrl')}
             />
           </div>
         </div>
@@ -136,8 +161,8 @@ export function OrganizationDetailsForm({ data, onChange }: OrganizationDetailsF
             <input
               type="number"
               id="establishedYear"
-              value={data.establishedYear}
-              onChange={(e) => onChange({ establishedYear: parseInt(e.target.value) })}
+              value={formData.establishedYear || ''}
+              onChange={handleInputChange('establishedYear')}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               min="1900"
               max={new Date().getFullYear()}
@@ -154,8 +179,8 @@ export function OrganizationDetailsForm({ data, onChange }: OrganizationDetailsF
             <input
               type="number"
               id="teamSize"
-              value={data.teamSize}
-              onChange={(e) => onChange({ teamSize: parseInt(e.target.value) })}
+              value={formData.teamSize || ''}
+              onChange={handleInputChange('teamSize')}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               min="1"
             />
@@ -171,8 +196,8 @@ export function OrganizationDetailsForm({ data, onChange }: OrganizationDetailsF
             <input
               type="number"
               id="previousHackathons"
-              value={data.previousHackathons}
-              onChange={(e) => onChange({ previousHackathons: parseInt(e.target.value) })}
+              value={formData.previousHackathons || ''}
+              onChange={handleInputChange('previousHackathons')}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               min="0"
             />
@@ -182,12 +207,12 @@ export function OrganizationDetailsForm({ data, onChange }: OrganizationDetailsF
         <TagInput
           label="Skills Required*"
           description="What skills are you looking for in participants?"
-          value={data.requiredSkills || []}
-          onChange={(newSkills) => onChange({ requiredSkills: newSkills })}
+          value={formData.requiredSkills || []}
+          onChange={(newSkills) => setFormData({ ...formData, requiredSkills: newSkills })}
           placeholder="Add required skill"
           color="primary"
         />
       </div>
     </Box>
   );
-} 
+}

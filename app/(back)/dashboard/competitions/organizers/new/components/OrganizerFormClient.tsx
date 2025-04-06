@@ -1,122 +1,131 @@
 'use client';
-import { useState } from 'react';
-import { TabNavigation } from '../../commons/TabNavigation';
-import { ProgressBar } from '../../commons/ProgressBar';
-import { FormNavigation } from '../../commons/FormNavigation';
+
+import React, { useState } from 'react';
+import { Box, Tab, Tabs } from '@mui/material';
+import { ORGANIZER_FORM_TABS, OrganizerFormTabs } from '../constants/tabs';
+import { OrganizerCreateProps } from '@/types/types';
+import { OrganizerType } from '@prisma/client';
+import { ProgressBar } from '../../../commons/ProgressBar';
+import { FormNavigation } from '../../../commons/FormNavigation';
 import { BasicInfoForm } from '../components/BasicInfoForm/BasicInfoForm';
 import { ContactInfoForm } from '../components/ContactInfoForm/ContactInfoForm';
 import { OrganizationDetailsForm } from '../components/OrganizationDetailsForm/OrganizationDetailsForm';
 import { SocialLinksForm } from '../components/SocialLinksForm/SocialLinksForm';
 import { OrganizerPreview } from '../components/OrganizerPreview/OrganizerPreview';
-import { tabs, TabId } from '../constants/tabs';
-import { OrganizerFormData, OrganizerFormProps } from '../types';
+import { createOrganizer } from '@/actions/organizers';
 
-const calculateProgress = (formData: OrganizerFormData) => {
-  const sections = [
-    // Basic Info
-    {
-      weight: 25,
-      isComplete: () =>
-        Boolean(
-          formData.name &&
-          formData.email &&
-          formData.phone &&
-          formData.role
-        ),
-    },
-    // Contact Info
-    {
-      weight: 25,
-      isComplete: () =>
-        Boolean(
-          formData.address.street &&
-          formData.address.city &&
-          formData.address.state &&
-          formData.address.country &&
-          formData.address.zipCode
-        ),
-    },
-    // Organization Details
-    {
-      weight: 25,
-      isComplete: () =>
-        Boolean(
-          formData.organizationName &&
-          formData.organizationType &&
-          formData.description &&
-          formData.website &&
-          formData.logo &&
-          formData.establishedYear &&
-          formData.teamSize
-        ),
-    },
-    // Social Links - Optional but good to have
-    {
-      weight: 25,
-      isComplete: () =>
-        Object.values(formData.socialLinks).some(link => Boolean(link)),
-    },
-  ];
-
-  const completedWeight = sections.reduce(
-    (acc, section) => acc + (section.isComplete() ? section.weight : 0),
-    0
-  );
-
-  return completedWeight;
-};
-
-function OrganizerFormClient({ initialData, onSubmit }: OrganizerFormProps) {
-  const [activeTab, setActiveTab] = useState<TabId>('basic-info');
-  const [formData, setFormData] = useState<OrganizerFormData>({
+export const OrganizerFormClient: React.FC<{
+  initialData?: Partial<OrganizerCreateProps>;
+}> = ({ initialData }) => {
+  const [activeTab, setActiveTab] = useState<OrganizerFormTabs>(ORGANIZER_FORM_TABS.DETAILS);
+  const [formData, setFormData] = useState<OrganizerCreateProps>({
     name: '',
     email: '',
     phone: '',
     role: '',
-    address: {
-      street: '',
-      city: '',
-      state: '',
-      country: '',
-      zipCode: '',
-    },
+    street: '',
+    city: '',
+    state: '',
+    country: '',
+    zipCode: '',
     organizationName: '',
-    organizationType: 'educational',
+    organizationType: 'educational' as OrganizerType,
     description: '',
     website: '',
-    logo: null,
+    logoUrl: '',
     establishedYear: new Date().getFullYear(),
-    teamSize: 0,
+    teamSize: 1,
     previousHackathons: 0,
-    requiredSkills: [],
-    socialLinks: {
-      linkedin: '',
-      twitter: '',
-      github: '',
-      facebook: '',
-      instagram: '',
-    },
+    requiredSkills: [] as string[],
+    github: '',
+    linkedin: '',
+    twitter: '',
+    facebook: '',
+    instagram: '',
   });
 
-  const handleFormChange = (updates: Partial<OrganizerFormData>) => {
-    setFormData((prev) => ({ ...prev, ...updates }));
+  const calculateProgress = () => {
+    const sections = [
+      {
+        weight: 30,
+        isComplete: () => Boolean(
+          formData.name && 
+          formData.email && 
+          formData.phone && 
+          formData.description
+        ),
+      },
+      {
+        weight: 20,
+        isComplete: () => Boolean(
+          formData.street &&
+          formData.city &&
+          formData.state &&
+          formData.zipCode
+        ),
+      },
+      {
+        weight: 20,
+        isComplete: () => Boolean(
+          formData.organizationName &&
+          formData.organizationType &&
+          formData.description
+        ),
+      },
+      {
+        weight: 15,
+        isComplete: () => Boolean(
+          formData.github ||
+          formData.linkedin
+        ),
+      },
+      {
+        weight: 15,
+        isComplete: () => Boolean(
+          formData.logoUrl
+        ),
+      },
+    ];
+
+    return sections.reduce((acc, section) => 
+      acc + (section.isComplete() ? section.weight : 0), 0
+    );
+  };
+
+  const handleTabChange = (event: React.SyntheticEvent, newValue: OrganizerFormTabs) => {
+    setActiveTab(newValue);
   };
 
   const handlePrevious = () => {
-    const currentIndex = tabs.findIndex((tab) => tab.id === activeTab);
+    const tabs = Object.values(ORGANIZER_FORM_TABS);
+    const currentIndex = tabs.indexOf(activeTab);
     if (currentIndex > 0) {
-      setActiveTab(tabs[currentIndex - 1].id);
+      setActiveTab(tabs[currentIndex - 1]);
     }
   };
 
   const handleNext = () => {
-    const currentIndex = tabs.findIndex((tab) => tab.id === activeTab);
+    const tabs = Object.values(ORGANIZER_FORM_TABS);
+    const currentIndex = tabs.indexOf(activeTab);
     if (currentIndex < tabs.length - 1) {
-      setActiveTab(tabs[currentIndex + 1].id);
+      setActiveTab(tabs[currentIndex + 1]);
     }
   };
 
-  const progress = calculateProgress(formData);
+  const handleSubmit = async () => {
+    try {
+      await createOrganizer(formData);
+      // After successful submission, redirect to the organizers list page
+      window.location.href = '/dashboard/competitions/organizers';
+    } catch (error) {
+      console.error('Error creating organizer:', error);
+      if (error instanceof Error) {
+        alert(error.message);
+      }
+    }
+  };
+
+  const progress = calculateProgress();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -131,67 +140,87 @@ function OrganizerFormClient({ initialData, onSubmit }: OrganizerFormProps) {
             </div>
             {progress === 100 ? (
               <button
-                onClick={() => {
-                  console.log('Submitting form...');
-                }}
+                onClick={handleSubmit}
                 className="w-full sm:w-auto px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
               >
-                Submit
+                Complete Profile
               </button>
             ) : (
               <div className="w-full sm:w-auto text-sm text-blue-600 bg-blue-50 px-4 py-2 rounded-md text-center">
-                Complete setup 100% to proceed
+                Complete all sections to proceed
               </div>
             )}
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-        <div className="overflow-x-auto -mx-4 sm:mx-0">
-          <div className="min-w-max sm:min-w-0">
-            <TabNavigation<TabId> 
-              activeTab={activeTab} 
-              onTabChange={setActiveTab} 
-              tabs={tabs}
-            />
-          </div>
-        </div>
-        <div className="mt-4 sm:mt-8">
-          {activeTab === 'basic-info' && (
-            <div className="space-y-6">
-              <BasicInfoForm data={formData} onChange={handleFormChange} />
-              <FormNavigation onPrevious={handlePrevious} onNext={handleNext} />
-            </div>
-          )}
-          {activeTab === 'contact-info' && (
-            <div className="space-y-6">
-              <ContactInfoForm data={formData} onChange={handleFormChange} />
-              <FormNavigation onPrevious={handlePrevious} onNext={handleNext} />
-            </div>
-          )}
-          {activeTab === 'organization' && (
-            <div className="space-y-6">
-              <OrganizationDetailsForm data={formData} onChange={handleFormChange} />
-              <FormNavigation onPrevious={handlePrevious} onNext={handleNext} />
-            </div>
-          )}
-          {activeTab === 'social-links' && (
-            <div className="space-y-6">
-              <SocialLinksForm data={formData} onChange={handleFormChange} />
-              <FormNavigation onPrevious={handlePrevious} onNext={handleNext} />
-            </div>
-          )}
-          {activeTab === 'preview' && (
-            <div className="space-y-6">
-              <OrganizerPreview data={formData} />
-              <FormNavigation onPrevious={handlePrevious} onNext={handleNext} />
-            </div>
-          )}
-        </div>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Box sx={{ width: '100%' }}>
+          <Tabs
+            value={activeTab}
+            onChange={handleTabChange}
+            variant="scrollable"
+            scrollButtons="auto"
+          >
+            {Object.entries(ORGANIZER_FORM_TABS).map(([key, label]) => (
+              <Tab key={key} label={label} value={label} />
+            ))}
+          </Tabs>
+
+          <Box sx={{ mt: 3 }}>
+            {activeTab === ORGANIZER_FORM_TABS.DETAILS && (
+              <div className="space-y-6">
+                <BasicInfoForm 
+                  formData={formData} 
+                  setFormData={setFormData}
+                  requiredFields={['name', 'email', 'phone', 'description']}
+                />
+                <FormNavigation onPrevious={handlePrevious} onNext={handleNext} />
+              </div>
+            )}
+            {activeTab === ORGANIZER_FORM_TABS.CONTACT && (
+              <div className="space-y-6">
+                <ContactInfoForm 
+                  formData={formData} 
+                  setFormData={setFormData}
+                />
+                <FormNavigation onPrevious={handlePrevious} onNext={handleNext} />
+              </div>
+            )}
+            {activeTab === ORGANIZER_FORM_TABS.ORGANIZATION && (
+              <div className="space-y-6">
+                <OrganizationDetailsForm 
+                  formData={formData} 
+                  setFormData={setFormData}
+                />
+                <FormNavigation onPrevious={handlePrevious} onNext={handleNext} />
+              </div>
+            )}
+            {activeTab === ORGANIZER_FORM_TABS.SOCIAL_LINKS && (
+              <div className="space-y-6">
+                <SocialLinksForm 
+                  formData={formData} 
+                  setFormData={setFormData}
+                />
+                <FormNavigation onPrevious={handlePrevious} onNext={handleNext} />
+              </div>
+            )}
+            {activeTab === ORGANIZER_FORM_TABS.PREVIEW && (
+              <div className="space-y-6">
+                <OrganizerPreview data={formData} />
+                <div className="flex justify-center space-x-4">
+                  <button
+                    onClick={handleSubmit}
+                    className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            )}
+          </Box>
+        </Box>
       </main>
     </div>
   );
-}
-
-export default OrganizerFormClient; 
+};

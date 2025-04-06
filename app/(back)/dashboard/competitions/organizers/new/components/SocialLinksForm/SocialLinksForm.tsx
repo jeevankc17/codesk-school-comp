@@ -1,18 +1,21 @@
 import React from 'react';
-import { InfoTooltip } from '../../../commons/InfoTooltip';
+import { InfoTooltip } from '../../../../commons/InfoTooltip';
 import { SocialLinkInput } from './SocialLinkInput';
-import { SocialLinksFormProps } from './types';
+import { OrganizerCreateProps } from "@/types/types";
 
-export function SocialLinksForm({ data, onChange }: SocialLinksFormProps) {
+interface SocialLinksFormProps {
+  formData: OrganizerCreateProps;
+  setFormData: (data: OrganizerCreateProps) => void;
+}
+
+export function SocialLinksForm({ formData, setFormData }: SocialLinksFormProps) {
   const handleSocialLinkChange = (
-    platform: keyof typeof data.socialLinks,
+    platform: keyof OrganizerCreateProps,
     value: string
   ) => {
-    onChange({
-      socialLinks: {
-        ...data.socialLinks,
-        [platform]: value,
-      },
+    setFormData({
+      ...formData,
+      [platform]: value,
     });
   };
 
@@ -26,27 +29,27 @@ export function SocialLinksForm({ data, onChange }: SocialLinksFormProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <SocialLinkInput
           id="linkedin"
-          value={data.socialLinks.linkedin}
+          value={formData.linkedin || ''}
           onChange={(value) => handleSocialLinkChange('linkedin', value)}
         />
         <SocialLinkInput
           id="twitter"
-          value={data.socialLinks.twitter}
+          value={formData.twitter || ''}
           onChange={(value) => handleSocialLinkChange('twitter', value)}
         />
         <SocialLinkInput
           id="github"
-          value={data.socialLinks.github}
+          value={formData.github || ''}
           onChange={(value) => handleSocialLinkChange('github', value)}
         />
         <SocialLinkInput
           id="facebook"
-          value={data.socialLinks.facebook}
+          value={formData.facebook || ''}
           onChange={(value) => handleSocialLinkChange('facebook', value)}
         />
         <SocialLinkInput
           id="instagram"
-          value={data.socialLinks.instagram}
+          value={formData.instagram || ''}
           onChange={(value) => handleSocialLinkChange('instagram', value)}
         />
       </div>
@@ -56,4 +59,4 @@ export function SocialLinksForm({ data, onChange }: SocialLinksFormProps) {
       </div>
     </div>
   );
-} 
+}

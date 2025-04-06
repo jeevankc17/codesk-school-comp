@@ -1,8 +1,8 @@
 import React from 'react';
-import { OrganizerFormData } from '../../types';
+import { OrganizerCreateProps } from '@/types/types';
 
 interface BasicInfoSectionProps {
-  data: OrganizerFormData;
+  data: OrganizerCreateProps;
 }
 
 export function BasicInfoSection({ data }: BasicInfoSectionProps) {

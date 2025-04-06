@@ -11,10 +11,10 @@ export function SocialLinksSection({
   website
 }: SocialLinksSectionProps) {
   const socialLinks = [
-    { icon: Github, link: github, label: 'GitHub' },
-    { icon: Linkedin, link: linkedin, label: 'LinkedIn' },
-    { icon: Twitter, link: twitter, label: 'Twitter' },
-    { icon: Globe, link: website, label: 'Website' },
+    { icon: Github, link: github ?? undefined, label: 'GitHub' },
+    { icon: Linkedin, link: linkedin ?? undefined, label: 'LinkedIn' },
+    { icon: Twitter, link: twitter ?? undefined, label: 'Twitter' },
+    { icon: Globe, link: website ?? undefined, label: 'Website' },
   ];
 
   const activeSocialLinks = socialLinks.filter(link => link.link);
