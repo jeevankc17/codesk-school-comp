@@ -6,7 +6,7 @@ import Logo from "../logo";
 
 export default function SiteFooter() {
   return (
-    <footer className="w-full bg-[#6366F1] text-white">
+    <footer className="w-full bg-blue-600 text-white">
       <div className="container px-4 py-16 md:px-6">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4">
@@ -17,19 +17,19 @@ export default function SiteFooter() {
             </p>
             <div className="flex space-x-4">
               <Link href="#" className="rounded-full bg-white p-2 hover:bg-white/90">
-                <Twitter className="h-4 w-4 text-[#6366F1]" />
+                <Twitter className="h-4 w-4 text-white" />
                 <span className="sr-only">Twitter</span>
               </Link>
               <Link href="#" className="rounded-full bg-white p-2 hover:bg-white/90">
-                <Instagram className="h-4 w-4 text-[#6366F1]" />
+                <Instagram className="h-4 w-4 text-white" />
                 <span className="sr-only">Instagram</span>
               </Link>
               <Link href="#" className="rounded-full bg-white p-2 hover:bg-white/90">
-                <Linkedin className="h-4 w-4 text-[#6366F1]" />
+                <Linkedin className="h-4 w-4 text-white" />
                 <span className="sr-only">LinkedIn</span>
               </Link>
               <Link href="#" className="rounded-full bg-white p-2 hover:bg-white/90">
-                <Youtube className="h-4 w-4 text-[#6366F1]" />
+                <Youtube className="h-4 w-4 text-white" />
                 <span className="sr-only">YouTube</span>
               </Link>
             </div>
@@ -86,7 +86,7 @@ export default function SiteFooter() {
                 placeholder="Enter email.."
                 type="email"
               />
-              <Button className="w-full bg-white text-[#6366F1] hover:bg-white/90" type="submit">
+              <Button className="w-full bg-white text-blue-600 hover:bg-white/90" type="submit">
                 Subscribe
                 <svg
                   className="ml-2 h-4 w-4"
